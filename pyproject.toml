@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "playground"
+name = "tsp"
 version = "0.1.0"
 description = ""
 authors = ["Igor <igorlfs@ufmg.br>"]
