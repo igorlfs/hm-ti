@@ -1,2 +1,5 @@
 **/.jukit
 **/__pycache__
+docs/**
+!docs/*.pdf
+!docs/*.tex
