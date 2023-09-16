@@ -1,29 +1,33 @@
+import time as ti
 from pathlib import Path
 
 import networkx as nx
 import numpy as np
+import pandas as pd
 import tsplib95
+from scipy.spatial import distance
 
-from src.algorithms import Algorithm
-from src.helpers import calculate_distances, match_algorithm, plot_path
+from src.algorithms import match_algorithm
 
 PROBLEMS_EUC_2D_PATH = "EUC_2D"
 
 
 def run() -> None:
+    data: list[list] = []
     problems_euc_2d = Path(PROBLEMS_EUC_2D_PATH).glob("*")
-    # TODO df: Nome | Algoritmo | Tempo | Custo
     for problem_path in problems_euc_2d:
-        results = []
         problem = tsplib95.load(problem_path)
-        x = np.array([problem.node_coords[i][0] for i in problem.get_nodes()])
-        y = np.array([problem.node_coords[i][1] for i in problem.get_nodes()])
-        distances = calculate_distances(x, y)
+        coords = np.array([problem.node_coords[i] for i in problem.get_nodes()])
+        distances = distance.cdist(coords, coords, "euclidean")
         graph = nx.Graph(distances)
         algorithms = ["Christofides", "TATT", "MonteCarlo"]
         for algorithm in algorithms:
+            start = ti.time()
             result = match_algorithm(algorithm, graph)
+            end = ti.time()
+            time = end - start
             if result is not None:
-                cost, path = result
-                results.append(Algorithm(path, cost, algorithm))
-        plot_path(x, y, results)
+                cost, _ = result
+                data.append([problem.name, algorithm, time, cost])
+    df = pd.DataFrame(data, columns=["Name", "Algorithm", "Time", "Cost"])
+    df.to_csv("results.csv", index=False)

@@ -44,6 +44,10 @@ select = [
     "ARG", # Unused arguments
     "PTH", # Use Pathlib
 ]
+ignore = ["PD901"] # df var name
+
+[tool.ruff.pylint]
+max-args = 6
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.13"
@@ -55,6 +59,7 @@ scipy = "^1.11.2"
 pandas = "^2.1.0"
 pyqt6 = "^6.5.2"        # Friendship with GTK is over, Qt is my new best friend
 cairocffi = "^1.6.1"    # QtCairo looks slightly better than QtAgg, but adds this dependency
+pytest = "^7.4.2"
 
 
 [build-system]
