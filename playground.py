@@ -190,7 +190,7 @@ def plot_path(x: NDArray, y: NDArray, results: list[Algorithm]) -> None:
 
 # |%%--%%| <czLS8aiJfd|kCX3SBVH6k>
 
-PROBLEM_PATH = "../EUC_2D/berlin52.tsp"
+PROBLEM_PATH = "EUC_2D/berlin52.tsp"
 problem = tsplib95.load(PROBLEM_PATH)
 
 # |%%--%%| <kCX3SBVH6k|PEvwJA6A8o>

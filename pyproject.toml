@@ -52,6 +52,9 @@ rustworkx = "^0.13.1"
 numba = "^0.57.1"
 matplotlib = "^3.8.0"
 scipy = "^1.11.2"
+pandas = "^2.1.0"
+pyqt6 = "^6.5.2"        # Friendship with GTK is over, Qt is my new best friend
+cairocffi = "^1.6.1"    # QtCairo looks slightly better than QtAgg, but adds this dependency
 
 
 [build-system]
