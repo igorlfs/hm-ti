@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "playground"
+version = "0.1.0"
+description = ""
+authors = ["Igor <igorlfs@ufmg.br>"]
+readme = "README.md"
+
+[tool.black]
+line-length = 90
+
+[tool.ruff]
+line-length = 90
+select = [
+    "E",    # Pycodestyle's Errors
+    "W",    # Pycodestyle's Warnings
+    "F",    # Pyflakes
+    "C90",  # McCabe (Ciclomatic Complexity)
+    "I",    # Isort
+    "N",    # Pep8-naming
+    "UP",   # Pyupgrade
+    "RUF",  # Ruff's builtin rules
+    "PERF", # Perflint
+    "NPY",  # Numpy
+    "FLY",  # Flynt
+    "TRY",  # Tryceratops
+    "PL",   # Pylint
+    "PGH",  # Pygrep-hooks
+    "PD",   # Pandas-vet
+    # Flake 8
+    "ANN", # Annotations
+    "BLE", # Blind except
+    "B",   # Bugbear
+    "A",   # Builtins
+    "C4",  # Comprehensions
+    "EM",  # Errmsg
+    "ISC", # Implicit str concat
+    "ICN", # Import Conventions
+    "PIE", # Pie
+    "Q",   # Quotes
+    "RSE", # Raise
+    "RET", # Return
+    "SIM", # Simplify
+    "TID", # Tidy imports
+    "ARG", # Unused arguments
+    "PTH", # Use Pathlib
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+tsplib95 = "^0.7.1"
+rustworkx = "^0.13.1"
+numba = "^0.57.1"
+matplotlib = "^3.8.0"
+scipy = "^1.11.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
