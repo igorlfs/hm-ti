@@ -1,0 +1,40 @@
+\documentclass{article}
+
+\usepackage[T1]{fontenc}        % Codificação para português (ao copiar e colar do documento, acentos são colados corretamente)
+\usepackage[portuguese]{babel}  % Português (alguns pacotes usam termos da linguagem, por ex 'Referências')
+
+\author{Igor Lacerda}
+\title{Trabalho de Implementação - Parte III}
+\date{Heurísticas e Meta-heurísticas}
+
+\begin{document}
+
+\maketitle
+
+O trabalho consiste na implementação de heurísticas para o Problema do Caixeiro Viajante. Na terceira parte, era necessário escolher uma heurística baseada em uma meta-heurística: foi escolhida a \textit{Simulated Annealing}, que inicialmente pode explorar caminhos que pioram a função objetivo (fazendo isso para poder explorar melhor o espaço de busca), mas conforme progride tende a rejeitar essas escolhas.
+
+\section*{Resultados}
+
+Como o algoritmo é aleatório, foram realizadas as médias do tempo e do custo para 30 execuções.
+
+Para a instância att48, cuja distância é não euclidiana: 1.1082s e custo 35225.
+
+\begin{tabular}{|| c c c | c c c ||}
+    \hline
+    Nome & Tempo (s) & Custo & Nome & Tempo (s) & Custo \\
+    \hline
+    berlin52 & 1.1395 & 8231.9298 & pr107 & 1.3580 & 47633.0067 \\
+    kroA100 & 1.3743 & 23969.1277 & pr124 & 1.4301 & 66610.5488 \\
+    kroA150 & 1.5666 & 33575.8324 & pr136 & 1.4914 & 113333.1160 \\
+    kroA200 & 1.7688 & 44600.9787 & pr144 & 1.5421 & 68514.8836 \\
+    kroB100 & 1.3461 & 24610.7493 & pr152 & 1.5697 & 87305.6735 \\
+    kroB150 & 1.5687 & 33165.5366 & pr76 & 1.2309 & 123330.3722 \\
+    kroB200 & 1.7734 & 44304.1005 & rat195 & 1.7654 & 2781.0137 \\
+    kroC100 & 1.3421 & 23537.2781 & rat99 & 1.3214 & 1359.6422 \\
+    kroD100 & 1.3461 & 23714.0650 & st70 & 1.1980 & 736.1579 \\
+    kroE100 & 1.3286 & 24458.0438 & lin105 & 1.3460 & 16119.2363 \\
+    \hline
+\end{tabular}
+
+
+\end{document}
