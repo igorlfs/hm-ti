@@ -1,6 +1,5 @@
 \documentclass{article}
 
-\usepackage{multicol}
 \usepackage[T1]{fontenc}        % Codificação para português (ao copiar e colar do documento, acentos são colados corretamente)
 \usepackage[portuguese]{babel}  % Português (alguns pacotes usam termos da linguagem, por ex 'Referências')
 
@@ -12,45 +11,27 @@
 
 \maketitle
 
-O Trabalho de Implementação de Heurísticas consiste na implementação de heurísticas para o Problema do Caixeiro Viajante (TSP). Na primeira parte, era necessário escolher e implementar alguma heurística construtiva. Foi escolhida a heurística \textit{Twice Around The Tree} (TATT).
-
-A ideia por trás da TATT é bem simples: embora seja complicado encontrar uma solução para o TSP, é muito fácil encontrar uma árvore geradora mínima, que é um problema parecido. Dado um grafo, qual das árvores que cobre todos os vértices tem o menor custo? Existem vários algoritmos (por exemplo, Kruskal e Prim) que respondem essa pergunta de maneira eficiente.
-
-É intuitivo pensar que a árvore que percorre todos os vértices, de maneira a minimizar o custo, deve compartilhar algumas arestas com o ciclo hamiltoniano mínimo (TSP). Mas é preciso transformar a árvore em um caminho, e depois ``fechá-lo''. Na TATT isso é feito através do caminhamento em profundidade (pré-ordem), com o vértice inicial adicionado no final.
+O trabalho consiste na implementação de heurísticas para o Problema do Caixeiro Viajante. Na primeira parte, era necessário escolher uma heurística construtiva: foi escolhida a \textit{Twice Around The Tree}, que constrói a árvore geradora mínima e faz o caminhamento \textit{preorder}.
 
 \section*{Resultados}
 
-\begin{multicols}{2}
-    \begin{tabular}{c c c}
-        Nome & Tempo (s) & Custo \\
-        \hline
-        kroE100 & 0.0064 & 30507.41 \\
-        kroC100 & 0.0063 & 27966.54 \\
-        kroB100 & 0.0061 & 25881.19 \\
-        kroD100 & 0.0062 & 27113.29 \\
-        berlin52 & 0.0017 & 10116.01 \\
-        pr76 & 0.0039 & 145338.11 \\
-        pr144 & 0.0146 & 80596.32 \\
-        rat195 & 0.0608 & 3317.72 \\
-        kroA150 & 0.0185 & 35122.56 \\
-        kroA100 & 0.0070 & 27211.67 \\
-        \hline
-    \end{tabular}
-    \begin{tabular}{c c c}
-        Nome & Tempo(s) & Custo \\
-        \hline
-        pr136 & 0.0129 & 151913.74 \\
-        kroB200 & 0.0306 & 40710.95 \\
-        pr152 & 0.0173 & 87998.69 \\
-        kroA200 & 0.0349 & 40030.86 \\
-        pr107 & 0.0082 & 54238.03 \\
-        st70 & 0.0035 & 873.35 \\
-        pr124 & 0.0545 & 74140.95 \\
-        rat99 & 0.0067 & 1723.22 \\
-        kroB150 & 0.0185 & 36154.73 \\
-        lin105 & 0.0072 & 19498.40 \\
-        \hline
-    \end{tabular}
-\end{multicols}
+Para a instância att48, cuja distância é não euclidiana: 0.0060s e custo 43926.
+
+\begin{tabular}{|| c c c | c c c ||}
+    \hline
+    Nome & Tempo (s) & Custo & Nome & Tempo (s) & Custo \\
+    \hline
+    kroE100 & 0.0064 & 30507.41 & pr136 & 0.0129 & 151913.74 \\
+    kroC100 & 0.0063 & 27966.54 & kroB200 & 0.0306 & 40710.95 \\
+    kroB100 & 0.0061 & 25881.19 & pr152 & 0.0173 & 87998.69 \\
+    kroD100 & 0.0062 & 27113.29 & kroA200 & 0.0349 & 40030.86 \\
+    berlin52 & 0.0017 & 10116.01 & pr107 & 0.0082 & 54238.03 \\
+    pr76 & 0.0039 & 145338.11 & st70 & 0.0035 & 873.35 \\
+    pr144 & 0.0146 & 80596.32 & pr124 & 0.0545 & 74140.95 \\
+    rat195 & 0.0608 & 3317.72 & rat99 & 0.0067 & 1723.22 \\
+    kroA150 & 0.0185 & 35122.56 & kroB150 & 0.0185 & 36154.73 \\
+    kroA100 & 0.0070 & 27211.67 & lin105 & 0.0072 & 19498.40 \\
+    \hline
+\end{tabular}
 
 \end{document}
