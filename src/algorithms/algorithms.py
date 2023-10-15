@@ -59,24 +59,26 @@ def match_algorithm(name: str, graph: nx.Graph) -> tuple[float, list[int]] | Non
 
 def twice_around_the_tree(graph: nx.Graph) -> tuple[float, list[int]]:
     """Aproxime o caixeiro viajante para `graph` usando o `Twice Around The Tree`."""
-    mst: nx.Graph = nx.minimum_spanning_tree(graph)
-    cycle: list[int] = list(nx.dfs_preorder_nodes(mst, 0))
+    minimum_spanning_tree = nx.minimum_spanning_tree(graph)
+    cycle = list(nx.dfs_preorder_nodes(minimum_spanning_tree, 0))
     cycle.append(0)
     return nx.path_weight(graph, cycle, "weight"), cycle
 
 
 def christofides(graph: nx.Graph) -> tuple[float, list[int]]:
     """Aproxime o caixeiro viajante para `graph` usando o algoritmo de `Christofides`."""
-    mst: nx.Graph = nx.minimum_spanning_tree(graph)
-    assert not isinstance(mst.degree, int)
-    odd_degree_vertices = [node for (node, val) in mst.degree if val % 2 == 1]
-    odd_graph: nx.Graph = nx.induced_subgraph(graph, odd_degree_vertices)
+    minimum_spanning_tree = nx.minimum_spanning_tree(graph)
+    assert not isinstance(minimum_spanning_tree.degree, int)
+    odd_degree_vertices = [
+        node for (node, val) in minimum_spanning_tree.degree if val % 2 == 1
+    ]
+    odd_graph = nx.induced_subgraph(graph, odd_degree_vertices)
     matching = nx.min_weight_matching(odd_graph)
     eulerian_multigraph = nx.MultiGraph()
-    eulerian_multigraph.add_edges_from(mst.edges)
+    eulerian_multigraph.add_edges_from(minimum_spanning_tree.edges)
     eulerian_multigraph.add_edges_from(matching)
-    edges: list[tuple[int, int]] = list(nx.eulerian_circuit(eulerian_multigraph, 0))
-    cycle: list[int] = [0]
+    edges = list(nx.eulerian_circuit(eulerian_multigraph, 0))
+    cycle = [0]
     [cycle.append(v) for _, v in edges if v not in cycle]
     cycle.append(0)
     return nx.path_weight(graph, cycle, "weight"), cycle

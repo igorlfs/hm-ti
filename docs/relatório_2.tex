@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\usepackage[T1]{fontenc}        % Codificação para português (ao copiar e colar do documento, acentos são colados corretamente)
+\usepackage[portuguese]{babel}  % Português (alguns pacotes usam termos da linguagem, por ex 'Referências')
+
+\author{Igor Lacerda}
+\title{Trabalho de Implementação - Parte II}
+\date{Heurísticas e Meta-heurísticas}
+
+\begin{document}
+
+\maketitle
+
+O trabalho consiste na implementação de heurísticas para o Problema do Caixeiro Viajante. Na primeira parte, era necessário escolher vizinhanças para a implementação de um \textit{Variable Neighborhood Descent} (VND). As escolhas foram: 2-OPT e 3-OPT. No VND, o problema de se encontrar um mínimo local (e não ``ter para onde seguir'') é contornado trocando-se as vizinhanças que são buscadas. As vizinhanças 2-OPT e 3-OPT simplesmente propõem mudanças de 2 e 3 arestas, respectivamente. No final do algoritmo, o mínimo local encontrado é mínimo local de todas as vizinhanças.
+
+\section*{Resultados}
+
+Para a instância att48, cuja distância é não euclidiana: 0.47s e custo 35109.
+
+\begin{tabular}{|| c c c | c c c ||}
+    \hline
+    Nome & Tempo (s) & Custo & Nome & Tempo (s) & Custo \\
+    \hline
+    kroE100 & 4.32 & 23431.78 & pr136 & 11.51 & 102045.53 \\
+    kroC100 & 4.31 & 21528.32 & kroB200 & 51.52 & 32744.06 \\
+    kroB100 & 4.56 & 23221.35 & pr152 & 21.94 & 75140.76 \\
+    kroD100 & 4.39 & 22047.52 & kroA200 & 52.01 & 31612.81 \\
+    berlin52 & 0.58 & 8088.51 & pr107 & 5.54 & 44585.37 \\
+    pr76 & 2.67 & 114122.21 & st70 & 2.02 & 709.61 \\
+    pr144 & 13.97 & 61507.87 & pr124 & 5.81 & 60883.64 \\
+    rat195 & 47.91 & 2547.7 & rat99 & 4.55 & 1318.39 \\
+    kroA150 & 20.87 & 28002.45 & kroB150 & 15.74 & 28988.3 \\
+    kroA100 & 4.44 & 23252.92 & lin105 & 5.14 & 15249.0 \\
+    \hline
+\end{tabular}
+
+\end{document}
