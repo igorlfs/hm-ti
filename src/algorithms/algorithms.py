@@ -1,13 +1,15 @@
+import math
 import time as ti
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TypeAlias
 
 import networkx as nx
 import numpy as np
 import tsplib95
 from scipy.spatial import distance
 
-from .helpers import monte_carlo_step
+from .helpers import monte_carlo_step, three_opt, two_opt
 
 # Hiperparâmetros do simulated annealing
 MONTE_CARLO_STEPS = 20000
@@ -20,7 +22,10 @@ class Algorithm:
     name: str
 
 
-def get_time_and_cost(problem_path: Path, data: list[list]) -> None:
+row: TypeAlias = tuple[str, str, float, float]
+
+
+def get_time_and_cost(problem_path: Path, data: list[row]) -> None:
     """Calcula o tempo e o custo de aproximar a instância do TSP em `problem_path`,
     usando difentes algoritmos e adicionando os resultados em `data`."""
     problem = tsplib95.load(problem_path)
@@ -34,10 +39,9 @@ def get_time_and_cost(problem_path: Path, data: list[list]) -> None:
         start = ti.time()
         result = match_algorithm(algorithm, graph)
         end = ti.time()
-        time = end - start
         if result is not None:
             cost, _ = result
-            data.append([problem.name, algorithm, time, cost])
+            data.append((str(problem.name), algorithm, end - start, cost))
 
 
 def match_algorithm(name: str, graph: nx.Graph) -> tuple[float, list[int]] | None:
@@ -47,6 +51,8 @@ def match_algorithm(name: str, graph: nx.Graph) -> tuple[float, list[int]] | Non
             return twice_around_the_tree(graph)
         case "Christofides":
             return christofides(graph)
+        case "VND":
+            return variable_neighborhood_descent(graph)
         case "Simulated Annealing":
             return simulated_annealing(graph, 3 * graph.number_of_nodes())
 
@@ -93,3 +99,37 @@ def simulated_annealing(
     best_path = best_path.tolist()
     best_path.append(best_path[0])
     return best_cost, best_path
+
+
+def variable_neighborhood_descent(graph: nx.Graph) -> tuple[float, list[int]]:
+    """Aproxime o caixeiro viajante para `graph` usando o algoritmo de `VND`."""
+    distances = nx.to_numpy_matrix(graph)
+    num_cities = len(distances)
+    best_tour = list(range(num_cities))
+    best_cost = nx.path_weight(graph, [*best_tour, 0], "weight")
+
+    is_improving = True
+    while is_improving:
+        is_improving = False
+        for i in range(num_cities):
+            for j in range(i + 1, num_cities):
+                # Caso essa condição seja verdadeira,
+                # estamos apeanas invertendo a ordem do caminhamento
+                if j - i == num_cities - 1:
+                    continue
+                delta, new_tour = two_opt(best_tour, distances, i, j)
+                if delta < 0 and not math.isclose(delta, 0, abs_tol=1e-4):
+                    best_tour = new_tour
+                    best_cost += delta
+                    is_improving = True
+
+        for i in range(num_cities):
+            for j in range(i + 1, num_cities):
+                for k in range(j + 1, num_cities):
+                    delta, new_tour = three_opt(best_tour, distances, i, j, k)
+                    if delta < 0 and not math.isclose(delta, 0, abs_tol=1e-4):
+                        best_tour = new_tour
+                        best_cost += delta
+                        is_improving = True
+
+    return best_cost, best_tour

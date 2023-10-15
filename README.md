@@ -6,6 +6,8 @@ A Heurística escolhida foi o *Twice Around The Tree*
 
 ## Parte 2: Heurística VND
 
+As vizinhanças escolhidas foram o *2-OPT* e o *3-OPT*.
+
 ## Parte 3: Metaheurística
 
 A Metaheurística escolhida foi o *Simulated Annealing*

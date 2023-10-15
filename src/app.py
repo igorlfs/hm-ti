@@ -2,14 +2,14 @@ from pathlib import Path
 
 import pandas as pd
 
-from .algorithms.algorithms import get_time_and_cost
+from .algorithms import get_time_and_cost, row
 
 PROBLEMS_EUC_2D_PATH = "EUC_2D"
 PROBLEM_ATT_PATH = "ATT/att48.tsp"
 
 
 def run() -> None:
-    data: list[list] = []
+    data: list[row] = []
     problems = Path(PROBLEMS_EUC_2D_PATH).glob("*")
     for problem_path in problems:
         get_time_and_cost(problem_path, data)

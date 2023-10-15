@@ -65,3 +65,45 @@ def monte_carlo_step(
     beta = beta * DECAY_RATIO
 
     return cost, path, best_cost, best_path
+
+
+def two_opt(
+    tour: list[int], distances: NDArray, i: int, j: int
+) -> tuple[float, list[int]]:
+    # Nós não precisamos nos preocupar com fazer o módulo
+    # pois Python aceita indexação com índices negativos.
+    new_tour = tour[:i] + tour[i : j + 1][::-1] + tour[j + 1 :]
+    num_cities = len(tour)
+    left = (i - 1) % num_cities
+    right = (j + 1) % num_cities
+    # Já aqui... É necessário usar o módulo.
+    delta = (
+        distances[tour[left], tour[j]]
+        + distances[tour[i], tour[right]]
+        - distances[tour[left], tour[i]]
+        - distances[tour[j], tour[right]]
+    )
+    return delta, new_tour
+
+
+def three_opt(
+    tour: list[int], distances: NDArray, i: int, j: int, k: int
+) -> tuple[float, list[int]]:
+    new_tour = (
+        tour[:i] + tour[i : j + 1][::-1] + tour[j + 1 : k + 1][::-1] + tour[k + 1 :]
+    )
+    num_cities = len(tour)
+    i_prev = (i - 1) % num_cities
+    j_next = (j + 1) % num_cities
+    k_next = (k + 1) % num_cities
+    delta = (
+        distances[tour[i_prev], tour[j]]
+        + distances[tour[i], tour[k]]
+        + distances[tour[j_next], tour[k_next]]
+        - (
+            distances[tour[i_prev], tour[i]]
+            + distances[tour[j], tour[j_next]]
+            + distances[tour[k], tour[k_next]]
+        )
+    )
+    return delta, new_tour
