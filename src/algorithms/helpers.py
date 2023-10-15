@@ -1,68 +1,53 @@
 import numpy as np
-from numpy import float64, int64
+from numpy import float64
 from numpy.typing import NDArray
 
-# Hiperparâmetros do simulated annealing
-DECAY_RATIO = 0.999
 
-
-def monte_carlo_swap_path(path: NDArray[int64]) -> tuple[NDArray[int64], int, int]:
+def monte_carlo_swap_path(path: list[int], distances: NDArray) -> tuple[list[int], float]:
     """Calcula o novo caminho de `path` a partir da troca de dois vértices."""
     num_cities = len(path)
-    # define uma nova caminhada
     rng = np.random.default_rng()
 
-    idx: NDArray = rng.choice(np.arange(num_cities), 2, replace=False)
+    # i deve ser menor que j
+    i = rng.choice(np.arange(num_cities - 1))
+    j = rng.choice(np.arange(i + 1, num_cities))
 
-    # o índice inicial deve ser o menor
-    beg, end = (idx[0], idx[1]) if idx[0] < idx[1] else (idx[1], idx[0])
+    new_path = path[:i] + path[i : j + 1][::-1] + path[j + 1 :]
 
-    # inverte o sentido em que percorre o caminho entre os indices escolhidos
-    new_path = np.zeros(num_cities, dtype=int64)
-    for k in range(num_cities):
-        new_path[k] = path[end - k + beg] if k >= beg and k <= end else path[k]
+    left = (i - 1) % num_cities
+    right = (j + 1) % num_cities
+    delta: float = (
+        distances[path[left], path[j]]
+        + (distances[path[i], path[right]])
+        - (distances[path[left], path[i]])
+        - (distances[path[j], path[right]])
+    )
 
-    return new_path, beg, end
+    return new_path, delta
 
 
 def monte_carlo_step(
     beta: float,
     cost: float,
-    path: NDArray[int64],
+    path: list[int],
     best_cost: float,
-    best_path: NDArray[int64],
-    dist: NDArray[float64],
-) -> tuple[float, NDArray[int64], float, NDArray[int64]]:
+    best_path: list[int],
+    distances: NDArray[float64],
+) -> tuple[float, list[int], float, list[int]]:
     """Rode um passo de Monte Carlo para o TSP."""
-    num_cities = len(path)
-    new_path = np.zeros(num_cities, dtype=int64)
+    new_path, delta = monte_carlo_swap_path(path, distances)
 
-    # propõe um novo caminho
-    new_path, beg, end = monte_carlo_swap_path(path)
-
-    # determina a diferença de custo
-    left_from_beg = (beg - 1) % num_cities
-    right_from_end = (end + 1) % num_cities
-    delta = (
-        float(dist[new_path[left_from_beg], new_path[beg]])
-        + float(dist[new_path[right_from_end], new_path[end]])
-        - float(dist[path[left_from_beg], path[beg]])
-        - float(dist[path[right_from_end], path[end]])
-    )
-
-    # se o custo diminuir, a gente sempre troca
+    # Se o custo diminuir, a gente sempre troca
     if delta < 0:
         cost += delta
         path = new_path
         if cost < best_cost:
             best_cost = cost
             best_path = path
-    # aplica o criterio de Metropolis
+    # Aplica o critério de Metropolis se o custo aumentar
     elif np.random.random() < np.exp(-beta * delta):
         cost += delta
         path = new_path
-
-    beta = beta * DECAY_RATIO
 
     return cost, path, best_cost, best_path
 
@@ -77,7 +62,7 @@ def two_opt(
     left = (i - 1) % num_cities
     right = (j + 1) % num_cities
     # Já aqui... É necessário usar o módulo.
-    delta = (
+    delta: float = (
         distances[tour[left], tour[j]]
         + distances[tour[i], tour[right]]
         - distances[tour[left], tour[i]]

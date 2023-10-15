@@ -13,6 +13,7 @@ from .helpers import monte_carlo_step, three_opt, two_opt
 
 # Hiperparâmetros do simulated annealing
 MONTE_CARLO_STEPS = 20000
+DECAY_RATIO = 0.999
 
 
 @dataclass
@@ -89,7 +90,7 @@ def simulated_annealing(
 ) -> tuple[float, list[int]]:
     """Aproxime o caixeiro viajante para `graph` usando `Simulated Annealing`."""
     distances = nx.to_numpy_matrix(graph)
-    path = np.arange(len(distances))
+    path = list(range(len(distances)))
     cost = nx.path_weight(graph, [*path, 0], "weight")
     best_cost = cost
     best_path = path
@@ -98,7 +99,8 @@ def simulated_annealing(
         cost, path, best_cost, best_path = monte_carlo_step(
             beta, cost, path, best_cost, best_path, distances
         )
-    best_path = best_path.tolist()
+        beta = beta * DECAY_RATIO
+
     best_path.append(best_path[0])
     return best_cost, best_path
 

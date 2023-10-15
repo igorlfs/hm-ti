@@ -2,7 +2,7 @@
 
 ## Parte 1: Heurística Construtiva
 
-A Heurística escolhida foi o *Twice Around The Tree*
+A Heurística escolhida foi o *Twice Around The Tree*. Também foi implementado o algoritmo de Christofides.
 
 ## Parte 2: Heurística VND
 
