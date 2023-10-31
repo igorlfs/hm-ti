@@ -11,9 +11,8 @@ from scipy.spatial import distance
 
 from .helpers import monte_carlo_step, three_opt, two_opt
 
-# Hiperparâmetros do simulated annealing
+# Hiperparâmetro do simulated annealing
 MONTE_CARLO_STEPS = 20000
-DECAY_RATIO = 0.999
 
 
 @dataclass
@@ -35,7 +34,7 @@ def get_time_and_cost(problem_path: Path, data: list[row]) -> None:
     if problem_path.name.find("att") != -1:
         distances = np.trunc(distances)  # corte nas instâncias não euclidianas
     graph = nx.Graph(distances)
-    algorithms = ["Christofides", "TATT", "Simulated Annealing"]
+    algorithms = ["Christofides", "TATT", "VND", "Simulated Annealing"]
     for algorithm in algorithms:
         start = ti.time()
         result = match_algorithm(algorithm, graph)
@@ -99,7 +98,6 @@ def simulated_annealing(
         cost, path, best_cost, best_path = monte_carlo_step(
             beta, cost, path, best_cost, best_path, distances
         )
-        beta = beta * DECAY_RATIO
 
     best_path.append(best_path[0])
     return best_cost, best_path

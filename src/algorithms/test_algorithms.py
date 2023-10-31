@@ -6,8 +6,6 @@ from scipy.spatial import distance
 
 from .algorithms import christofides, twice_around_the_tree
 
-EXPECTED_TTATT = 39
-
 
 def test_twice_around_the_tree() -> None:
     """Teste o twice around the tree usando o exemplo de Algoritmos II."""
@@ -22,7 +20,7 @@ def test_twice_around_the_tree() -> None:
     )
     graph = nx.from_numpy_array(matrix)
     cost, _ = twice_around_the_tree(graph)
-    assert cost == EXPECTED_TTATT
+    assert cost == 39  # noqa: PLR2004
 
 
 @pytest.fixture

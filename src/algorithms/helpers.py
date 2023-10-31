@@ -2,6 +2,9 @@ import numpy as np
 from numpy import float64
 from numpy.typing import NDArray
 
+# Hiperparâmetro do simulated annealing
+DECAY_RATIO = 0.999
+
 
 def monte_carlo_swap_path(path: list[int], distances: NDArray) -> tuple[list[int], float]:
     """Calcula o novo caminho de `path` a partir da troca de dois vértices."""
@@ -48,6 +51,7 @@ def monte_carlo_step(
     elif np.random.random() < np.exp(-beta * delta):
         cost += delta
         path = new_path
+        beta = beta * DECAY_RATIO
 
     return cost, path, best_cost, best_path
 
